@@ -1,4 +1,4 @@
-### Group Info
+### GROUP INFO
 ```bash
 Group: 30
 Team members: Tapon Das and Patrick Imoh 
