@@ -20,7 +20,7 @@ $ssh username@login.umd.umich.edu -p 22
 
 #### copy file to server:
 ```bash
-scp -rv source -P 22 username@login.umd.umich.edu: destination-path
+$scp -rv source -P 22 username@login.umd.umich.edu: destination-path
 # User your umich password 
 # Verfiy with Duo app 
 ```
