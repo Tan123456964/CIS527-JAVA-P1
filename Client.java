@@ -61,7 +61,7 @@ public class Client {
 					writeToServer(bufferedWriter,userInput);
 
 					serverInput = bufferedReader.readLine();
-					System.out.println("Echo:" + serverInput);
+					System.out.println(serverInput.replace("%n","\n"));
 
 				
 					if (serverInput != null && (serverInput.equals("200 OK") || serverInput.contains("200 OK"))) {
@@ -72,9 +72,12 @@ public class Client {
 						}
 						else if(userInput.equals("MSGSTORE")){
 						
+							
 							System.out.print("Enter a new message:");
-							userInput = scanner.nextLine();
-							writeToServer(bufferedWriter,userInput);
+							String msg = scanner.nextLine();
+
+							writeToServer(bufferedWriter,"%:MSGSTORE:%"+msg);
+							
 						}
 						else{
 							// do nothing 

@@ -112,30 +112,36 @@ public class Server {
 
 							System.out.println("Inside MESSAGEGET.");
 							// writes back to client
-							String wordOfTheDay ="200 OK. " + word.get(wordNum % word.size());
-							System.out.println("Word Of the day:"+wordOfTheDay);
+							String wordOfTheDay ="200 OK%n" + word.get(wordNum % word.size());
 							writeToClient(bufferedWriter, wordOfTheDay);
 							wordNum++;
 						}
-						// TODO:
+						
 						else if (line != null && line.equals("MSGSTORE")) {
 
 							if (session.size() == 1) {
 								writeToClient(bufferedWriter, "200 OK");
+							}
+							else{
+								writeToClient(bufferedWriter, "400 a user must login first.");
 							}
 
 						
 						} else if (line != null && line.contains("LOGIN")) {
 							System.out.println("Inside LOGIN.");
 
-							String login[] = line.split(" "); // LOGIN USER PASS => [LOGIN,USER,PASS]
-							if (login.length < 3) {
+							String login[] = line.split(" "); 
+							if(session.size() > 0){
+								String msg = "404 user "+ session.keySet().toArray()[0] +" is already logged in.";
+								writeToClient(bufferedWriter, msg);
+							}
+							else if (login.length < 3) {
 								writeToClient(bufferedWriter, "404 incomplete command.");
 							} else if (userInfo.containsKey(login[1]) && userInfo.get(login[1]).equals(login[2])) {
 								session.put(login[1], login[2]);
 								writeToClient(bufferedWriter, "200 OK");
 							} else {
-								writeToClient(bufferedWriter, "404 BD request.");
+								writeToClient(bufferedWriter, "404 Username or password is incorrect.");
 							}
 
 						} else if (line != null && line.equals("SHUTDOWN")) {
@@ -152,7 +158,13 @@ public class Server {
 							}
 
 						} else if (line != null && line.equals("LOGOUT")) {
-							// LOGOUT 
+							if(session.size() > 0){
+								session.clear();
+								writeToClient(bufferedWriter, "200 OK");
+							}
+							else{
+								writeToClient(bufferedWriter, "404 there are no users.");
+							}
 
 						} else if (line != null && line.equals("QUIT")) {
 							// delete login session file
@@ -160,8 +172,15 @@ public class Server {
 							break;
 
 						} else {
-							System.out.println("Inside Else.");
-							writeToClient(bufferedWriter, "404 Invalid command.");
+							if(line != null && line.contains("%:MSGSTORE:%")){
+								String msg = line.replaceAll("%:MSGSTORE:%", "");
+								word.add(msg);
+								writeToClient(bufferedWriter, "-----***200***----");
+							}
+							else{
+								writeToClient(bufferedWriter, "404 Invalid command.");
+							}
+
 						}
 					}
 
