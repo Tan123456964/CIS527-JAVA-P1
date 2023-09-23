@@ -22,20 +22,20 @@ public class Client {
             bufferedReader = new BufferedReader(inputStreamReader);
             bufferedWriter = new BufferedWriter(outputStreamWriter);
 
-            Scanner scanner = new Scanner(System.in);
+            try (Scanner scanner = new Scanner(System.in)) {
+                while (true) {
 
-            while (true) {
+                    String msgToSend = scanner.nextLine();
+                    bufferedWriter.write(msgToSend);
+                    bufferedWriter.newLine();
+                    bufferedWriter.flush();
 
-                String msgToSend = scanner.nextLine();
-                bufferedWriter.write(msgToSend);
-                bufferedWriter.newLine();
-                bufferedWriter.flush();
+                    System.out.println("Server: " + bufferedReader.readLine());
 
-                System.out.println("Server: " + bufferedReader.readLine());
+                    if (msgToSend.equalsIgnoreCase("QUIT"))
+                        break;
 
-                if (msgToSend.equalsIgnoreCase("QUIT"))
-                    break;
-
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
