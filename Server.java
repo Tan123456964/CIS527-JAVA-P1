@@ -6,8 +6,13 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-
 public class Server {
+
+	public static void writeToClient(BufferedWriter br, String message) throws IOException{
+		br.write(message);
+		br.newLine();
+		br.flush();
+	}
 
 	/**
 	 * 
@@ -50,21 +55,22 @@ public class Server {
 
 	public static void main(String args[]) {
 
+		ServerSocket myServerice = null;
+		Socket serviceSocket = null;
+
+		String line;
+
 		InputStreamReader inputStreamReader = null;
 		OutputStreamWriter outputStreamWriter = null;
 		BufferedReader bufferedReader = null;
 		BufferedWriter bufferedWriter = null;
 
-		String line;
-		ServerSocket myServerice = null;
-		Socket serviceSocket = null;
-
-        // list of user name and password 
-		Map <String, String> userInfo = new HashMap<String, String>();
-		userInfo.put("root","root01");
-		userInfo.put("john","john01");
-		userInfo.put("david","david01");
-		userInfo.put("mary","mary01");
+		// list of user name and password
+		Map<String, String> userInfo = new HashMap<String, String>();
+		userInfo.put("root", "root01");
+		userInfo.put("john", "john01");
+		userInfo.put("david", "david01");
+		userInfo.put("mary", "mary01");
 
 		// Try to open a server socket
 		try {
@@ -78,97 +84,109 @@ public class Server {
 		// connections.
 		// Open input and output streams
 
-		while (true) {
-			try {
-				serviceSocket = myServerice.accept();
-				inputStreamReader = new InputStreamReader(serviceSocket.getInputStream());
-				outputStreamWriter = new OutputStreamWriter(serviceSocket.getOutputStream());
+		if (myServerice != null) {
 
-				bufferedReader = new BufferedReader(inputStreamReader);
-				bufferedWriter = new BufferedWriter(outputStreamWriter);
+			while (true) {
+				try {
+					serviceSocket = myServerice.accept();
 
-				// word of teh day 
-			    int wordNum = 0;
-				ArrayList<String> word = readFromFile("word.txt");
-				Map <String, String> session = new HashMap<String, String>();
+					inputStreamReader = new InputStreamReader(serviceSocket.getInputStream());
+					outputStreamWriter = new OutputStreamWriter(serviceSocket.getOutputStream());
 
-				// As long as we receive data, echo that data back to the client.
-				while ((line = bufferedReader.readLine()) != null) {
+					bufferedReader = new BufferedReader(inputStreamReader);
+					bufferedWriter = new BufferedWriter(outputStreamWriter);
 
-					System.out.println("Client CMD:"+line);
+					// word of the day
+					int wordNum = 0;
+					ArrayList<String> word = readFromFile("wordoftheday.txt"); // [0,2,3]
+					Map<String, String> session = new HashMap<String, String>();
 
-					
-					if (line.equals("MSGGET")) {
+					// As long as we receive data, echo that data back to the client.
+					while (true) {
 
-						System.out.println("insider msgget");
+						line = bufferedReader.readLine();
+
+						System.out.println("Client CMD"+line);
+
+						if (line != null && line.equals("MSGGET")) {
+
+							System.out.println("Inside MESSAGEGET.");
+							// writes back to client
+							String wordOfTheDay ="200 OK. " + word.get(wordNum % word.size());
+							System.out.println("Word Of the day:"+wordOfTheDay);
+							writeToClient(bufferedWriter, wordOfTheDay);
+							wordNum++;
+						}
+						// TODO:
+						else if (line != null && line.equals("MSGSTORE")) {
+
+							if (session.size() == 1) {
+								writeToClient(bufferedWriter, "200 OK");
+							}
 
 						
-						// writes back to client
-						
-						bufferedWriter.write("200 OK");
-						bufferedWriter.write(word.get(wordNum%word.size()));
-						wordNum++;
-					
-					} else if (line.equals("MSGSTORE")) { //TODO:
-						if(session.size() == 1){
-							bufferedWriter.write("200 OK");
+						} else if (line != null && line.contains("LOGIN")) {
+							System.out.println("Inside LOGIN.");
 
-						}
+							String login[] = line.split(" "); // LOGIN USER PASS => [LOGIN,USER,PASS]
+							if (login.length < 3) {
+								writeToClient(bufferedWriter, "404 incomplete command.");
+							} else if (userInfo.containsKey(login[1]) && userInfo.get(login[1]).equals(login[2])) {
+								session.put(login[1], login[2]);
+								writeToClient(bufferedWriter, "200 OK");
+							} else {
+								writeToClient(bufferedWriter, "404 BD request.");
+							}
 
-						
-					} else if (line.contains("LOGIN")) {
-						String login[] = line.split(" "); // LOGIN USER PASS => [LOGIN,USER,PASS]
-						if(login.length < 3){
-							bufferedWriter.write("404 incomplete command.");
-						}
-						else if(userInfo.containsKey(login[1]) && userInfo.get(login[1]).equals(login[2])){
-							session.put(login[1],login[2]);
-						}
-						else{
-							bufferedWriter.write("404 BD request.");
-						}
+						} else if (line != null && line.equals("SHUTDOWN")) {
 
-					} else if (line.equals("SHUTDOWN")) {
+							if(session.size() > 0 && session.containsKey("root")){
 
-						if(session.size() > 0 && session.containsKey("root")){
-							bufferedWriter.write("200 OK");
-								bufferedReader.close();
-								bufferedWriter.close();
-								serviceSocket.close();
+						     	writeToClient(bufferedWriter, "200 OK");
 								myServerice.close();
-								session.clear();
-								word.clear();
+								myServerice = null;
+								break;
+							}
+							else{
+								writeToClient(bufferedWriter, "404 User must be a root user.");
+							}
 
-								System.out.println("Server is Successfully Shutdown");
-								System.exit(0);
+						} else if (line != null && line.equals("LOGOUT")) {
+							// LOGOUT 
 
+						} else if (line != null && line.equals("QUIT")) {
+							// delete login session file
+							writeToClient(bufferedWriter, "200 OK");
+							break;
+
+						} else {
+							System.out.println("Inside Else.");
+							writeToClient(bufferedWriter, "404 Invalid command.");
 						}
-						else{
-							bufferedWriter.write("300 user must be root.");
-						}
-					
-						
-					} else if (line.equals("LOGOUT")) { // TODO:
-
-					} else if (line.equals("QUIT")) {
-						// delete login session file
-						bufferedWriter.write("200 OK.");
-						break;
-
-					} else {
-						bufferedWriter.write("404 invalid command.");
-						System.out.println("insider else");
-						// writes back to client any invalid messages
 					}
-				}
 
-				// close input and output stream and socket
-				bufferedReader.close();
-				bufferedWriter.close();
-				serviceSocket.close();
-			} catch (IOException e) {
-				System.out.println(e);
+                    // clear/close all connection
+					inputStreamReader.close();
+					outputStreamWriter.close();
+					bufferedReader.close();
+					bufferedWriter.close();
+					serviceSocket.close();
+					session.clear();
+					wordNum = 0;
+                    
+					// exiting the program if server is closed 
+					if(myServerice == null){
+						break;
+					}
+
+					
+				} catch (IOException e) {
+					System.out.println(e);
+				}
 			}
 		}
+	    
+       System.out.println("***END OF SERVER***");
+	
 	}
 }
