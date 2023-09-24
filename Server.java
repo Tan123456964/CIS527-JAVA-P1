@@ -99,7 +99,7 @@ public class Server {
 					bufferedReader = new BufferedReader(inputStreamReader);
 					bufferedWriter = new BufferedWriter(outputStreamWriter);
 
-					String prevCMD = "";
+					String prevCMD = ""; // message store command 
 
 					// word of the day
 					int wordNum = 0;
@@ -113,23 +113,21 @@ public class Server {
 
 						System.out.println("Client CMD: " + line);
 
-
-						if(prevCMD.equals("MSGSTORE") && session.size() == 1){
-
-							word.add(line);
-							writeToClient(bufferedWriter, "200 OK");
-							prevCMD = ""; // assign previous command to empty string 
-							continue; // jump back from loop 
-						}
-
 						if (line != null && line.equals("MSGGET")) {
 							// writes back to client
 							writeToClient(bufferedWriter, "200 OK");
 							writeToClient(bufferedWriter, word.get(wordNum % word.size()));
 							wordNum++;
-						} else if (line != null && line.equals("MSGSTORE")) {
+						} else if (line != null && (line.equals("MSGSTORE") || prevCMD.equals("MSGSTORE"))) {
 
 							if (session.size() == 1) {
+								if(prevCMD.equals("MSGSTORE")){
+									word.add(line);
+									prevCMD = "";
+								}
+								else{
+                                    prevCMD = line;
+								}
 								writeToClient(bufferedWriter, "200 OK");
 							} 
 							else {
@@ -178,7 +176,7 @@ public class Server {
 						} else {
 							writeToClient(bufferedWriter, "404 Invalid command.");
 						}
-						prevCMD = line != null ? line : "";
+						
 					}
 
 					// clear/close all connection
