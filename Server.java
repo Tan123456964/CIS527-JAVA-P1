@@ -74,6 +74,7 @@ public class Server {
 		userInfo.put("david", "david01");
 		userInfo.put("mary", "mary01");
 
+		
 		// Try to open a server socket
 		try {
 			myServerice = new ServerSocket(SERVER_PORT);
@@ -112,19 +113,26 @@ public class Server {
 
 						System.out.println("Client CMD: " + line);
 
+
+						if(prevCMD.equals("MSGSTORE") && session.size() == 1){
+
+							word.add(line);
+							writeToClient(bufferedWriter, "200 OK");
+							prevCMD = ""; // assign previous command to empty string 
+							continue; // jump back from loop 
+						}
+
 						if (line != null && line.equals("MSGGET")) {
 							// writes back to client
 							writeToClient(bufferedWriter, "200 OK");
 							writeToClient(bufferedWriter, word.get(wordNum % word.size()));
 							wordNum++;
-						} else if (line != null && (line.equals("MSGSTORE") || prevCMD.equals("MSGSTORE"))) {
+						} else if (line != null && line.equals("MSGSTORE")) {
 
 							if (session.size() == 1) {
-								if (prevCMD.equals("MSGSTORE")) {
-									word.add(line);
-								}
 								writeToClient(bufferedWriter, "200 OK");
-							} else {
+							} 
+							else {
 								writeToClient(bufferedWriter, "400 a user must login first.");
 							}
 
