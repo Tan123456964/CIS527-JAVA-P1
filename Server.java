@@ -17,7 +17,7 @@ public class Server {
 	/**
 	 * 
 	 * @filename :"file path"
-	 * @returns : read from file and stroed them in arrayList
+	 * @returns : read from file and store them in an arrayList
 	 */
 	public static ArrayList<String> readFromFile(String filename) throws IOException {
 
@@ -43,7 +43,7 @@ public class Server {
 	 * 
 	 * @filename :"file path"
 	 * @returns <void> : writes (append) text to a file
-	 *          Used to store message and user sessoin
+	 *          Used to store message and user session
 	 */
 
 	public static void writeTofile(String filename, String text) throws IOException {
@@ -53,7 +53,7 @@ public class Server {
 		writer.close();
 	}
 
-	public static final int SERVER_PORT = 5432;
+	public static final int SERVER_PORT = 6333;
 
 	public static void main(String args[]) {
 
@@ -102,7 +102,7 @@ public class Server {
 
 					// word of the day
 					int wordNum = 0;
-					ArrayList<String> word = readFromFile("word.txt"); // [0,2,3]
+					ArrayList<String> word = readFromFile("word.txt");
 					Map<String, String> session = new HashMap<String, String>();
 
 					// As long as we receive data, echo that data back to the client.
@@ -125,7 +125,7 @@ public class Server {
 								}
 								writeToClient(bufferedWriter, "200 OK");
 							} else {
-								writeToClient(bufferedWriter, "400 a user must login first.");
+								writeToClient(bufferedWriter, "401 You are not currently logged in, login first.");
 							}
 
 						} else if (line != null && line.contains("LOGIN")) {
@@ -135,12 +135,12 @@ public class Server {
 								String msg = "404 user " + session.keySet().toArray()[0] + " is already logged in.";
 								writeToClient(bufferedWriter, msg);
 							} else if (login.length < 3) {
-								writeToClient(bufferedWriter, "404 incomplete command.");
+								writeToClient(bufferedWriter, "300 message format error.");
 							} else if (userInfo.containsKey(login[1]) && userInfo.get(login[1]).equals(login[2])) {
 								session.put(login[1], login[2]);
 								writeToClient(bufferedWriter, "200 OK");
 							} else {
-								writeToClient(bufferedWriter, "404 Username or password is incorrect.");
+								writeToClient(bufferedWriter, "410 Wrong UserID or Password.");
 							}
 
 						} else if (line != null && line.equals("SHUTDOWN")) {
@@ -152,7 +152,8 @@ public class Server {
 								myServerice = null;
 								break;
 							} else {
-								writeToClient(bufferedWriter, "404 User must be a root user.");
+								writeToClient(bufferedWriter, "402 User not allowed to execute this command.");
+								// include error message for SHUTDOWN "300 message format error"
 							}
 
 						} else if (line != null && line.equals("LOGOUT")) {
@@ -160,7 +161,7 @@ public class Server {
 								session.clear();
 								writeToClient(bufferedWriter, "200 OK");
 							} else {
-								writeToClient(bufferedWriter, "404 there are no users.");
+								writeToClient(bufferedWriter, "409 there are no logged in users.");
 							}
 
 						} else if (line != null && line.equals("QUIT")) {
@@ -168,7 +169,7 @@ public class Server {
 							writeToClient(bufferedWriter, "200 OK");
 							break;
 						} else {
-							writeToClient(bufferedWriter, "404 Invalid command.");
+							writeToClient(bufferedWriter, "300 message format error.");
 						}
 						prevCMD = line != null ? line : "";
 					}
