@@ -14,7 +14,7 @@ public class Client {
 		br.flush();
 	}
 
-	public static final int SERVER_PORT = 5432;
+	public static final int SERVER_PORT = 6333;
 
 	public static void main(String[] args) {
 		Socket clientSocket = null;
@@ -30,7 +30,7 @@ public class Client {
 
 		// Check the number of command line parameters
 		if (args.length < 1) {
-			System.out.println("Usage: client <Server IP Address>");
+			System.out.println("Usage: Client <Server IP Address>");
 			System.exit(1);
 		}
 
@@ -54,7 +54,7 @@ public class Client {
 
 				while (true) {
 					// Get user input
-					System.out.print("Enter command:");
+					System.out.print("Enter command: ");
 					userInput = scanner.nextLine();
 
 					// send a request to server
@@ -74,7 +74,7 @@ public class Client {
 							System.out.println(serverInput);
 						} else if (userInput.equals("MSGSTORE")) {
 
-							System.out.print("Enter a new message:");
+							System.out.print("Enter a new message: ");
 
 							String msg = scanner.nextLine();
 							writeToServer(bufferedWriter, msg);
@@ -84,9 +84,7 @@ public class Client {
 						} else {
 							// do nothing
 						}
-
 					}
-
 				}
 			}
 
@@ -113,7 +111,5 @@ public class Client {
 		}
 
 		System.err.println("***End of client program.***");
-
 	}
-
 }
