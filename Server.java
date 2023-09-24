@@ -74,6 +74,7 @@ public class Server {
 		userInfo.put("david", "david01");
 		userInfo.put("mary", "mary01");
 
+		
 		// Try to open a server socket
 		try {
 			myServerice = new ServerSocket(SERVER_PORT);
@@ -98,7 +99,7 @@ public class Server {
 					bufferedReader = new BufferedReader(inputStreamReader);
 					bufferedWriter = new BufferedWriter(outputStreamWriter);
 
-					String prevCMD = "";
+					String prevCMD = ""; // message store command 
 
 					// word of the day
 					int wordNum = 0;
@@ -112,23 +113,30 @@ public class Server {
 
 						System.out.println("Client CMD: " + line);
 
-						if (line != null && line.equals("MSGGET")) {
+						if (line != null && (line.equals("MSGSTORE") || prevCMD.equals("MSGSTORE"))) {
+
+							if (session.size() == 1) {
+								if(prevCMD.equals("MSGSTORE")){
+									word.add(line);
+									prevCMD = "";
+								}
+								else{
+                                    prevCMD = line;
+								}
+								writeToClient(bufferedWriter, "200 OK");
+							} 
+							else {
+								writeToClient(bufferedWriter, "401 You are not currently logged in, login first.");
+							}
+
+						}
+
+						else if (line != null && line.equals("MSGGET")) {
 							// writes back to client
 							writeToClient(bufferedWriter, "200 OK");
 							writeToClient(bufferedWriter, word.get(wordNum % word.size()));
 							wordNum++;
-						} else if (line != null && (line.equals("MSGSTORE") || prevCMD.equals("MSGSTORE"))) {
-
-							if (session.size() == 1) {
-								if (prevCMD.equals("MSGSTORE")) {
-									word.add(line);
-								}
-								writeToClient(bufferedWriter, "200 OK");
-							} else {
-								writeToClient(bufferedWriter, "401 You are not currently logged in, login first.");
-							}
-
-						} else if (line != null && line.contains("LOGIN")) {
+						}  else if (line != null && line.contains("LOGIN")) {
 		
 							String login[] = line.split(" ");
 							if (session.size() > 0) {
@@ -171,7 +179,7 @@ public class Server {
 						} else {
 							writeToClient(bufferedWriter, "300 message format error.");
 						}
-						prevCMD = line != null ? line : "";
+						
 					}
 
 					// clear/close all connection

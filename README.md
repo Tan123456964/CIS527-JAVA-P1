@@ -41,8 +41,9 @@ $ make Client.class      # Creates client class file
 ```
 #### Execute java code:
 ```bash
-$ java Server
-$ java Client IP  #e.g., $ java Client 127.0.0.1
+scp -rv source -P 22 username@login.umd.umich.edu: destination-path
+# User your umich password 
+# Verfiy with Duo app 
 ```
 ### HOW TO USE THE YAMOTD
 The server begins execution by reading the "word.txt" file, which initially has five (5) messages of the day stored in it. Once executed, the server would wait for connection requests from the client.
