@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class Client {
 
-	public static void writeToServer(BufferedWriter br, String message) throws IOException{
+	public static void writeToServer(BufferedWriter br, String message) throws IOException {
 		br.write(message);
 		br.newLine();
 		br.flush();
@@ -30,8 +30,8 @@ public class Client {
 
 		// Check the number of command line parameters
 		if (args.length < 1) {
-		System.out.println("Usage: client <Server IP Address>");
-		System.exit(1);
+			System.out.println("Usage: client <Server IP Address>");
+			System.exit(1);
 		}
 
 		// Try to open a socket on SERVER_PORT
@@ -58,29 +58,31 @@ public class Client {
 					userInput = scanner.nextLine();
 
 					// send a request to server
-					writeToServer(bufferedWriter,userInput);
+					writeToServer(bufferedWriter, userInput);
 
 					serverInput = bufferedReader.readLine();
-					System.out.println(serverInput.replace("%n","\n"));
+					System.out.println(serverInput);
 
-				
 					if (serverInput != null && (serverInput.equals("200 OK") || serverInput.contains("200 OK"))) {
 
 						if (userInput != null && (userInput.equals("QUIT") || userInput.equals("SHUTDOWN"))) {
 							scanner.close();
 							break;
-						}
-						else if(userInput.equals("MSGSTORE")){
-						
-							
-							System.out.print("Enter a new message:");
-							String msg = scanner.nextLine();
+						} else if (userInput != null && userInput.equals("MSGGET")) {
+							// read word of the day
+							serverInput = bufferedReader.readLine();
+							System.out.println(serverInput);
+						} else if (userInput.equals("MSGSTORE")) {
 
-							writeToServer(bufferedWriter,"%:MSGSTORE:%"+msg);
-							
-						}
-						else{
-							// do nothing 
+							System.out.print("Enter a new message:");
+
+							String msg = scanner.nextLine();
+							writeToServer(bufferedWriter, msg);
+
+							serverInput = bufferedReader.readLine();
+							System.out.println(serverInput);
+						} else {
+							// do nothing
 						}
 
 					}
