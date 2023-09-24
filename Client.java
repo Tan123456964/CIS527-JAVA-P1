@@ -110,6 +110,6 @@ public class Client {
 			}
 		}
 
-		System.err.println("***End of client program.***");
+		System.err.println("***Client Terminated Successfully.***");
 	}
 }

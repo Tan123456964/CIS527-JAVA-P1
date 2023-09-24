@@ -46,10 +46,11 @@ public class Server {
 	 *          Used to store message and user session
 	 */
 
-	public static void writeTofile(String filename, String text) throws IOException {
+	public static void writeToFile(String filename, String text) throws IOException {
 
 		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(filename), true));
 		writer.write(text);
+		writer.newLine();
 		writer.close();
 	}
 
@@ -67,7 +68,7 @@ public class Server {
 		BufferedReader bufferedReader = null;
 		BufferedWriter bufferedWriter = null;
 
-		// list of user name and password
+		// List of usernames and passwords
 		Map<String, String> userInfo = new HashMap<String, String>();
 		userInfo.put("root", "root01");
 		userInfo.put("john", "john01");
@@ -83,8 +84,7 @@ public class Server {
 			System.out.println(e);
 		}
 
-		// Create a socket object from the ServerSocket to listen and accept
-		// connections.
+		// Create a socket object from the ServerSocket to listen and accept connections.
 		// Open input and output streams
 
 		if (myService != null) {
@@ -118,6 +118,7 @@ public class Server {
 							if (session.size() == 1) {
 								if(prevCMD.equals("MSGSTORE")){
 									word.add(line);
+									writeToFile("word.txt", line);
 									prevCMD = "";
 								}
 								else{
@@ -140,7 +141,7 @@ public class Server {
 		
 							String login[] = line.split(" ");
 							if (session.size() > 0) {
-								String msg = "404 user " + session.keySet().toArray()[0] + " is already logged in.";
+								String msg = "409 user " + session.keySet().toArray()[0] + " is already logged in.";
 								writeToClient(bufferedWriter, msg);
 							} else if (login.length < 3) {
 								writeToClient(bufferedWriter, "300 message format error.");
@@ -161,7 +162,6 @@ public class Server {
 								break;
 							} else {
 								writeToClient(bufferedWriter, "402 User not allowed to execute this command.");
-								// include error message for SHUTDOWN "300 message format error"
 							}
 
 						} else if (line != null && line.equals("LOGOUT")) {
@@ -182,7 +182,7 @@ public class Server {
 						
 					}
 
-					// clear/close all connection
+					// clear/close all connections
 					inputStreamReader.close();
 					outputStreamWriter.close();
 					bufferedReader.close();
@@ -201,7 +201,7 @@ public class Server {
 			}
 		}
 
-		System.out.println("***END OF SERVER***");
+		System.out.println("***Server Terminated Successfully***");
 
 	}
 }
