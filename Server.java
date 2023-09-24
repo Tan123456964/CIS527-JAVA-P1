@@ -57,7 +57,7 @@ public class Server {
 
 	public static void main(String args[]) {
 
-		ServerSocket myServerice = null;
+		ServerSocket myService = null;
 		Socket serviceSocket = null;
 
 		String line;
@@ -77,7 +77,7 @@ public class Server {
 		
 		// Try to open a server socket
 		try {
-			myServerice = new ServerSocket(SERVER_PORT);
+			myService = new ServerSocket(SERVER_PORT);
 
 		} catch (Exception e) {
 			System.out.println(e);
@@ -87,11 +87,11 @@ public class Server {
 		// connections.
 		// Open input and output streams
 
-		if (myServerice != null) {
+		if (myService != null) {
 
 			while (true) {
 				try {
-					serviceSocket = myServerice.accept();
+					serviceSocket = myService.accept();
 
 					inputStreamReader = new InputStreamReader(serviceSocket.getInputStream());
 					outputStreamWriter = new OutputStreamWriter(serviceSocket.getOutputStream());
@@ -156,8 +156,8 @@ public class Server {
 							if (session.size() > 0 && session.containsKey("root")) {
 
 								writeToClient(bufferedWriter, "200 OK");
-								myServerice.close();
-								myServerice = null;
+								myService.close();
+								myService = null;
 								break;
 							} else {
 								writeToClient(bufferedWriter, "402 User not allowed to execute this command.");
@@ -192,7 +192,7 @@ public class Server {
 					wordNum = 0;
 
 					// exiting the program if server is closed
-					if (myServerice == null) {
+					if (myService == null) {
 						break;
 					}
 				} catch (IOException e) {
