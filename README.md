@@ -41,7 +41,7 @@ It performs the following functions;
 #### Step 1: Download the tar file.
 #### Step 2: Unzip the downloaded tar file.
 ```bash
-$tar -xvf imoh_p_p1
+$tar -xvf das_t_p1
 ```
 #### Step 3: Confirm the contents
 1. Server.java
