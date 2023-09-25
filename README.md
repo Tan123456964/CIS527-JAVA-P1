@@ -11,18 +11,21 @@ UMich CIS 527 Group: 30
 3. Engaged in discussions on how to implement socket programming using Java.
 4. Engaged in research on how to implement the program.
 5. Reviewed individual codes and merged the better codes where necessary.
-6. Researched for standardized format and developed the README document.
-7. Tested and documented any findings with the aim to resolving them.
+6. Tested and documented any findings with the aim to resolving them.
 
 #### Tapon Das
 1. Implemented the LOGIN, MSGGET and MSGSTORE operations on both the client and server.
-2. Researched and implemented the HashMap and ArrayList functions.
-3. Researched and utilized an easy method to login to the UMich server to test the code.
+2. Researched and implemented the ArrayList function.
+3. Researched and implemented the HashMap function.
+4. Researched and implemented the writeToFile function.
+5. Researched and utilized an easy method to login to the UMich server to test the code.
 
 #### Patrick Imoh
 1. Implemented the LOGOUT, SHUTDOWN and QUIT operations on both the client and server.
-2. Reviewed and reformatted the code to remove unnecessary or uninitialized data as well as work on commenting and style.
-3. Reviewed the problem definition to ascertain that all requirements have been met.
+2. Reviewed and reformatted the code to remove unnecessary or uninitialized data.
+3. Reworked and reviewed commenting and style.
+4. Reviewed the problem definition to ascertain that all requirements have been met.
+5. Researched for standardized format and developed the README document.
 
 ### FUNCTIONS
 1. writeToClient; used to invoke the BufferedWriter function to write to the buffer, create a new line and then flush out the buffer.
@@ -37,11 +40,11 @@ It performs the following functions;
 3. It allows the "root" user to send a SHUTDOWN message to the server which will cause the server to close any open sockets and then terminate.
 4. It verifies the identity of a user using the LOGIN command.
 
-### HOW TO INSTALL AND RUN THE PROJECT ON UMICH INTRANET / NETWORK
+### HOW TO INSTALL AND RUN THE PROJECT ON UMICH NETWORK AND LINUX / UNIX ENVIRONMENT
 #### Step 1: Download the tar file.
 #### Step 2: Unzip the downloaded tar file.
 ```bash
-$tar -xvf das_t_p1
+$tar -xvf imoh_p_p1
 ```
 #### Step 3: Confirm the contents
 1. Server.java
@@ -49,10 +52,10 @@ $tar -xvf das_t_p1
 3. word.txt
 4. Makefile
 5. README.md 
-#### Step 4: Use a Linux / Unix Environment or Connect to UMich VPN:
+#### Step 4: Connect to UMich VPN OR Use a Linux / Unix Environment:
 To use the UMich VPN option, use the PaloAlto GlobalProtect VPN application and connect using the portal address: "umvpn.umd.umich.edu".
 #### Step 5: Connect to UMich Server:
-Only for users connecting to the UMich Server.
+Only for users connecting to the UMich Server. Linux / Unix users ignore this step.
 ```bash
 $ssh username@login.umd.umich.edu -p 22
 # Username is UMich ID; e.g. username = 'john' where email is john@umich.edu
@@ -60,7 +63,7 @@ $ssh username@login.umd.umich.edu -p 22
 # Authenticate with Duo application
 ```
 #### Step 6: Copy files to server:
-Only for users connecting to the UMich Server.
+Only for users connecting to the UMich Server. Linux / Unix users ignore this step.
 ```bash
 $scp -rv source -P 22 username@login.umd.umich.edu: destination-path
 # Use your UMich password
@@ -74,7 +77,7 @@ $make Client.class      # Creates client class file
 #### Step 8: Run the java code:
 ```bash
 $java Server
-$java Client IP        # e.g., java Client.java 127.0.0.1 
+$java Client IP         # e.g., java Client.java 127.0.0.1 
 ```
 ### HOW TO USE THE YAMOTD PROGRAM
 The server begins execution by reading the "word.txt" file, which initially has five (5) messages of the day stored in it. Once executed, the server would wait for connection requests from the client.
