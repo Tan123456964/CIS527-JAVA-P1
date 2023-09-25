@@ -1,68 +1,68 @@
 # YAMOTD PROJECT
 Yet another "message of the day" - yamotd is a java program for returning messages of the day already stored within the program.
-### AUTHORS:
-Tapon Das and Patrick Imoh
+### AUTHORS
+- Tapon Das
+- Patrick Imoh
 ### GROUP INFO
 UMich CIS 527 Group: 30
-### CONTRIBUTIONS
-#### Both Involved:
-1. Brainstormed on how to approach the project.
-2. Decided on whether to use C or Java, and drew out the structure for the sample program files.
-3. Engaged in discussions on how to implement socket programming using Java.
-4. Engaged in research on how to implement the program.
-5. Reviewed individual codes and merged the better codes where necessary.
-6. Tested and documented any findings with the aim to resolving them.
+### CONTRIBUTIONS FROM AUTHORS
+- Brainstormed on how to approach the project.
+- Decided on whether to use C, C++ or Java, and drew out the structure for the sample program files.
+- Engaged in discussions on how to implement socket programming using Java.
+- Engaged in research on how to implement the program.
+- Reviewed individual codes and merged the better codes where necessary.
+- Tested and documented any findings with the aim to resolving them.
+- Implemented the LOGIN, MSGGET, MSGSTORE, LOGOUT, SHUTDOWN and QUIT operations on both the client and server.
+- Researched and implemented the ArrayList, HashMap and writeToFile functions.
+- Researched and utilized an easy method to login to the UMich server to test the code.
+- Reviewed and reformatted the code to remove unnecessary or uninitialized data.
+- Reworked and reviewed commenting and style in the code.
+- Reviewed the problem definition to ascertain that all requirements have been met.
+- Researched for standardized format and developed the README document.
 
-#### Tapon Das
-1. Implemented the LOGIN, MSGGET and MSGSTORE operations on both the client and server.
-2. Researched and implemented the ArrayList function.
-3. Researched and implemented the HashMap function.
-4. Researched and implemented the writeToFile function.
-5. Researched and utilized an easy method to login to the UMich server to test the code.
-
-#### Patrick Imoh
-1. Implemented the LOGOUT, SHUTDOWN and QUIT operations on both the client and server.
-2. Reviewed and reformatted the code to remove unnecessary or uninitialized data.
-3. Reworked and reviewed commenting and style.
-4. Reviewed the problem definition to ascertain that all requirements have been met.
-5. Researched for standardized format and developed the README document.
-
-### FUNCTIONS
-1. writeToClient; used to invoke the BufferedWriter function to write to the buffer, create a new line and then flush out the buffer.
-2. // Other functions
+### FUNCTIONS USED
+- writeToClient; used to invoke the BufferedWriter function to write to the buffer, create a new line and then flush out the buffer.
+- // Other functions
 
 ### PROJECT DESCRIPTION
-These programs are written in java programming language and can be run on either a linux or unix environment. There is a client "Client.java" as well as server "Server.java" program. The communication between the server and client happens through TCP using the port number 6333. The server receives requests through this socket, acts on those requests, and returns the results to the requester. The client also creates a socket in the internet domain, send requests to the server IP of a computer specified on the command-line, and receive responses through this socket from the server. Only one connection between a client and the server is possible at this time.
+The programs are written in java programming language and can be run on either a linux or unix environment. There is a client "Client.java" as well as server "Server.java" program. The communication between the server and client happens through TCP using the port number 6333. The server receives requests through this socket, acts on those requests, and returns the results to the requester. The client also creates a socket in the internet domain, send requests to the server IP of a computer specified on the command-line, and receive responses through this socket from the server. Only one connection between a client and the server is possible at this time.
 
 It performs the following functions;
-1. It returns a message of the day on the client console to any user that sends the server a MSGGET message.
-2. It allows a user, who has been authenticated by the server to send the server a MSGSTORE message to upload one or more messages of the day to the server. These messages are stored on the file "word.txt" and can be returned to other clients that also send the MSGGET messages to the server.
-3. It allows the "root" user to send a SHUTDOWN message to the server which will cause the server to close any open sockets and then terminate.
-4. It verifies the identity of a user using the LOGIN command.
+- It returns a message of the day on the client console to any user that sends the server a MSGGET message.
+- It allows a user, who has been authenticated by the server to send the server a MSGSTORE message to upload one or more messages of the day to the server. These messages are stored in the file "word.txt" and can be returned to other clients that also send the MSGGET messages to the server.
+- It allows the "root" user to send a SHUTDOWN message to the server which will cause the server to close any open sessions and sockets, and then terminate.
+- It verifies the identity of a user using the LOGIN command, and then allows the user to logout from the session using the LOGOUT command.
+- It terminates a client session using the QUIT command.
 
-### HOW TO INSTALL AND RUN THE PROJECT ON UMICH NETWORK AND LINUX / UNIX ENVIRONMENT
-#### Step 1: Download the tar file.
-#### Step 2: Unzip the downloaded tar file.
+### HOW TO INSTALL AND RUN THE PROJECT ON THE UMICH NETWORK AND LINUX / UNIX ENVIRONMENT
+#### Step 1: Download the tar file
+This can be done using any method of your choice.
+#### Step 2: Unzip the downloaded tar file
 ```bash
-$tar -xvf imoh_p_p1
+$tar -xvf das_t_p1
 ```
 #### Step 3: Confirm the contents
-1. Server.java
-2. Client.java
-3. word.txt
-4. Makefile
-5. README.md 
-#### Step 4: Connect to UMich VPN OR Use a Linux / Unix Environment:
+01. Server.java
+02. Client.java
+03. word.txt
+04. Makefile
+05. README.md 
+#### Step 4: Connect to UMich VPN or use a Linux / Unix Environment
 To use the UMich VPN option, use the PaloAlto GlobalProtect VPN application and connect using the portal address: "umvpn.umd.umich.edu".
-#### Step 5: Connect to UMich Server:
-Only for users connecting to the UMich Server. Linux / Unix users ignore this step.
 ```bash
-$ssh username@login.umd.umich.edu -p 22
 # Username is UMich ID; e.g. username = 'john' where email is john@umich.edu
 # Use your UMich password
 # Authenticate with Duo application
 ```
-#### Step 6: Copy files to server:
+#### Step 5: Connect to UMich Server
+Only for users connecting to the UMich Server. Linux / Unix users ignore this step.
+```bash
+$ssh username@login.umd.umich.edu -p 22
+# Username is UMich ID; e.g., username = 'john' where email is john@umich.edu
+# Use your UMich password
+# Authenticate with Duo application
+```
+#### Step 6: Copy files to server
 Only for users connecting to the UMich Server. Linux / Unix users ignore this step.
 ```bash
 $scp -rv source -P 22 username@login.umd.umich.edu: destination-path
