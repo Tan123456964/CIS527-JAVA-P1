@@ -11,8 +11,7 @@ UMich CIS 527 Group: 30
 3. Engaged in discussions on how to implement socket programming using Java.
 4. Engaged in research on how to implement the program.
 5. Reviewed individual codes and merged the better codes where necessary.
-6. Researched for standardized format and developed the README document.
-7. Tested and documented any findings with the aim to resolving them.
+6. Tested and documented any findings with the aim to resolving them.
 
 #### Tapon Das
 1. Implemented the LOGIN, MSGGET and MSGSTORE operations on both the client and server.
@@ -26,6 +25,7 @@ UMich CIS 527 Group: 30
 2. Reviewed and reformatted the code to remove unnecessary or uninitialized data.
 3. Reworked and reviewed commenting and style.
 4. Reviewed the problem definition to ascertain that all requirements have been met.
+5. Researched for standardized format and developed the README document.
 
 ### FUNCTIONS
 1. writeToClient; used to invoke the BufferedWriter function to write to the buffer, create a new line and then flush out the buffer.
