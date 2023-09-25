@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class Client {
 
+    //writes a message to server.
 	public static void writeToServer(BufferedWriter br, String message) throws IOException {
 		br.write(message);
 		br.newLine();
@@ -60,6 +61,7 @@ public class Client {
 					// send a request to server
 					writeToServer(bufferedWriter, userInput);
 
+					// read and printer server response 
 					serverInput = bufferedReader.readLine();
 					System.out.println(serverInput);
 
@@ -68,11 +70,13 @@ public class Client {
 						if (userInput != null && (userInput.equals("QUIT") || userInput.equals("SHUTDOWN"))) {
 							scanner.close();
 							break;
-						} else if (userInput != null && userInput.equals("MSGGET")) {
+						} 
+						else if (userInput != null && userInput.equals("MSGGET")) {
 							// read word of the day
 							serverInput = bufferedReader.readLine();
 							System.out.println(serverInput);
-						} else if (userInput.equals("MSGSTORE")) {
+						} 
+						else if (userInput.equals("MSGSTORE")) {
 
 							System.out.print("Enter a new message: ");
 
@@ -81,7 +85,8 @@ public class Client {
 
 							serverInput = bufferedReader.readLine();
 							System.out.println(serverInput);
-						} else {
+						} 
+						else {
 							// do nothing
 						}
 					}
@@ -110,6 +115,6 @@ public class Client {
 			}
 		}
 
-		System.err.println("***Client Terminated Successfully.***");
+		System.out.println("***Client Terminated Successfully.***");
 	}
 }

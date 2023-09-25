@@ -8,6 +8,7 @@ import java.util.*;
 
 public class Server {
 
+	// Writes message to client
 	public static void writeToClient(BufferedWriter br, String message) throws IOException {
 		br.write(message);
 		br.newLine();
@@ -39,11 +40,10 @@ public class Server {
 	}
 
 	/**
-	 * NOTE: not used for this project
 	 * 
 	 * @filename :"file path"
 	 * @returns <void> : writes (append) text to a file
-	 *          Used to store message and user session
+	 *          Used to save messages to a file (doesn't override content of the file)
 	 */
 
 	public static void writeToFile(String filename, String text) throws IOException {
@@ -75,7 +75,6 @@ public class Server {
 		userInfo.put("david", "david01");
 		userInfo.put("mary", "mary01");
 
-		
 		// Try to open a server socket
 		try {
 			myService = new ServerSocket(SERVER_PORT);
@@ -84,7 +83,8 @@ public class Server {
 			System.out.println(e);
 		}
 
-		// Create a socket object from the ServerSocket to listen and accept connections.
+		// Create a socket object from the ServerSocket to listen and accept
+		// connections.
 		// Open input and output streams
 
 		if (myService != null) {
@@ -99,11 +99,14 @@ public class Server {
 					bufferedReader = new BufferedReader(inputStreamReader);
 					bufferedWriter = new BufferedWriter(outputStreamWriter);
 
-					String prevCMD = ""; // message store command 
+					// message store command
+					String msgStoreCMD = ""; 
 
 					// word of the day
 					int wordNum = 0;
 					ArrayList<String> word = readFromFile("word.txt");
+
+					// saves logged in users
 					Map<String, String> session = new HashMap<String, String>();
 
 					// As long as we receive data, echo that data back to the client.
@@ -113,32 +116,29 @@ public class Server {
 
 						System.out.println("Client CMD: " + line);
 
-						if (line != null && (line.equals("MSGSTORE") || prevCMD.equals("MSGSTORE"))) {
+						if (line != null && (line.equals("MSGSTORE") ||  msgStoreCMD.equals("MSGSTORE"))) {
 
 							if (session.size() == 1) {
-								if(prevCMD.equals("MSGSTORE")){
+								if ( msgStoreCMD.equals("MSGSTORE")) {
 									word.add(line);
 									writeToFile("word.txt", line);
-									prevCMD = "";
-								}
-								else{
-                                    prevCMD = line;
+									 msgStoreCMD = "";
+								} else {
+									 msgStoreCMD = line;
 								}
 								writeToClient(bufferedWriter, "200 OK");
-							} 
-							else {
+							} else {
 								writeToClient(bufferedWriter, "401 You are not currently logged in, login first.");
 							}
-
 						}
-
 						else if (line != null && line.equals("MSGGET")) {
 							// writes back to client
 							writeToClient(bufferedWriter, "200 OK");
 							writeToClient(bufferedWriter, word.get(wordNum % word.size()));
 							wordNum++;
-						}  else if (line != null && line.contains("LOGIN")) {
-		
+						} 
+						else if (line != null && line.contains("LOGIN")) {
+
 							String login[] = line.split(" ");
 							if (session.size() > 0) {
 								String msg = "409 user " + session.keySet().toArray()[0] + " is already logged in.";
@@ -151,8 +151,8 @@ public class Server {
 							} else {
 								writeToClient(bufferedWriter, "410 Wrong UserID or Password.");
 							}
-
-						} else if (line != null && line.equals("SHUTDOWN")) {
+						} 
+						else if (line != null && line.equals("SHUTDOWN")) {
 
 							if (session.size() > 0 && session.containsKey("root")) {
 
@@ -163,23 +163,23 @@ public class Server {
 							} else {
 								writeToClient(bufferedWriter, "402 User not allowed to execute this command.");
 							}
-
-						} else if (line != null && line.equals("LOGOUT")) {
+						} 
+						else if (line != null && line.equals("LOGOUT")) {
 							if (session.size() > 0) {
 								session.clear();
 								writeToClient(bufferedWriter, "200 OK");
 							} else {
 								writeToClient(bufferedWriter, "409 there are no logged in users.");
 							}
-
-						} else if (line != null && line.equals("QUIT")) {
+						} 
+						else if (line != null && line.equals("QUIT")) {
 							// delete login session file
 							writeToClient(bufferedWriter, "200 OK");
 							break;
-						} else {
+						} 
+						else {
 							writeToClient(bufferedWriter, "300 message format error.");
 						}
-						
 					}
 
 					// clear/close all connections
