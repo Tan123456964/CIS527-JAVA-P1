@@ -68,18 +68,25 @@ $ssh username@login.umd.umich.edu -p 22
 Only for users connecting to the UMich Server. Linux / Unix users ignore this step.
 ```bash
 $scp -rv source -P 22 username@login.umd.umich.edu: destination-path
+# Username is UMich ID; e.g., username = 'john' where email is john@umich.edu
 # Use your UMich password
 # Authenticate with Duo application
 ```
-#### Step 7: Run code with makefile:
+#### Step 7: Run code with makefile
 ```bash
-$make Server.class      # Creates server class file
-$make Client.class      # Creates client class file 
+$make all               # Creates the Server and Client class files
+$make Server.class      # Creates only the Server class file
+$make Client.class      # Creates only client class file 
 ```
-#### Step 8: Run the java code:
+#### Step 8: Run the java code
 ```bash
 $java Server
-$java Client IP         # e.g., java Client.java 127.0.0.1 
+$java Client IP         # e.g., java Client 127.0.0.1 
+```
+#### Step 9: To rebuild the files
+```bash
+$make clean             # removes the Server and Client class files
+$make clean all         # removes the Server and Client class files and then rebuilds a new Server and Client class files
 ```
 ### HOW TO USE THE YAMOTD PROGRAM
 The server begins execution by reading the "word.txt" file, which initially has five (5) messages of the day stored in it. Once executed, the server would wait for connection requests from the client.
