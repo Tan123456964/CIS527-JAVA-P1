@@ -8,7 +8,7 @@ import java.util.*;
 
 public class Server {
 
-	// Writes message to client
+	// write message to client
 	public static void writeToClient(BufferedWriter br, String message) throws IOException {
 		br.write(message);
 		br.newLine();
@@ -43,7 +43,7 @@ public class Server {
 	 * 
 	 * @filename :"file path"
 	 * @returns <void> : writes (append) text to a file
-	 *          Used to save messages to a file (doesn't override content of the file)
+	 *          used to save messages to a file (doesn't override content of the file)
 	 */
 
 	public static void writeToFile(String filename, String text) throws IOException {
@@ -68,14 +68,14 @@ public class Server {
 		BufferedReader bufferedReader = null;
 		BufferedWriter bufferedWriter = null;
 
-		// List of usernames and passwords
+		// list of usernames and passwords
 		Map<String, String> userInfo = new HashMap<String, String>();
 		userInfo.put("root", "root01");
 		userInfo.put("john", "john01");
 		userInfo.put("david", "david01");
 		userInfo.put("mary", "mary01");
 
-		// Try to open a server socket
+		// try to open a server socket
 		try {
 			myService = new ServerSocket(SERVER_PORT);
 
@@ -83,9 +83,9 @@ public class Server {
 			System.out.println(e);
 		}
 
-		// Create a socket object from the ServerSocket to listen and accept
+		// creates a socket object from the ServerSocket to listen and accept
 		// connections.
-		// Open input and output streams
+		// open input and output streams
 
 		if (myService != null) {
 
@@ -106,10 +106,10 @@ public class Server {
 					int wordNum = 0;
 					ArrayList<String> word = readFromFile("word.txt");
 
-					// saves logged in users
+					// save logged in user
 					Map<String, String> session = new HashMap<String, String>();
 
-					// As long as we receive data, echo that data back to the client.
+					// as long as we receive data, echo that data back to the client.
 					while (true) {
 
 						line = bufferedReader.readLine();
@@ -132,7 +132,7 @@ public class Server {
 							}
 						}
 						else if (line != null && line.equals("MSGGET")) {
-							// writes back to client
+							// write back to client
 							writeToClient(bufferedWriter, "200 OK");
 							writeToClient(bufferedWriter, word.get(wordNum % word.size()));
 							wordNum++;
@@ -182,7 +182,7 @@ public class Server {
 						}
 					}
 
-					// clear/close all connections
+					// clear or close all connections
 					inputStreamReader.close();
 					outputStreamWriter.close();
 					bufferedReader.close();
@@ -191,7 +191,7 @@ public class Server {
 					session.clear();
 					wordNum = 0;
 
-					// exiting the program if server is closed
+					// exit the program if server is closed
 					if (myService == null) {
 						break;
 					}

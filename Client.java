@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class Client {
 
-    //writes a message to server.
+    // write a message to server.
 	public static void writeToServer(BufferedWriter br, String message) throws IOException {
 		br.write(message);
 		br.newLine();
@@ -35,8 +35,8 @@ public class Client {
 			System.exit(1);
 		}
 
-		// Try to open a socket on SERVER_PORT
-		// Try to open input and output streams
+		// try to open a socket on SERVER_PORT
+		// try to open input and output streams
 		try {
 			clientSocket = new Socket(args[0], SERVER_PORT);
 
@@ -48,20 +48,20 @@ public class Client {
 
 			Scanner scanner = new Scanner(System.in);
 
-			// If everything has been initialized then we want to write some data
-			// to the socket we have opened a connection to on port 25
+			// if everything has been initialized then we want to write some data
+			// to the socket we have opened a connection to
 
 			if (clientSocket != null) {
 
 				while (true) {
-					// Get user input
+					// get user input
 					System.out.print("Enter command: ");
 					userInput = scanner.nextLine();
 
 					// send a request to server
 					writeToServer(bufferedWriter, userInput);
 
-					// read and printer server response 
+					// read and print server response 
 					serverInput = bufferedReader.readLine();
 					System.out.println(serverInput);
 

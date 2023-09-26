@@ -22,7 +22,9 @@ UMich CIS 527 Group: 30
 
 ### FUNCTIONS USED
 - writeToClient; used to invoke the BufferedWriter function to write to the buffer, create a new line and then flush out the buffer.
-- // Other functions
+- writeToFile; used to write the word of the day string to the word.txt file.
+- HashMap; used to store the key-value pairs for the usernames and passwords.
+- ArrayList; used to read data from file and store them in a dynamic array.
 
 ### PROJECT DESCRIPTION
 The programs are written in java programming language and can be run on either a linux or unix environment. There is a client "Client.java" as well as server "Server.java" program. The communication between the server and client happens through TCP using the port number 6333. The server receives requests through this socket, acts on those requests, and returns the results to the requester. The client also creates a socket in the internet domain, send requests to the server IP of a computer specified on the command-line, and receive responses through this socket from the server. Only one connection between a client and the server is possible at this time.
