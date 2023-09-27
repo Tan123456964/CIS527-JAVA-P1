@@ -38,9 +38,9 @@ It performs the following functions;
 ### HOW TO INSTALL AND RUN THE PROJECT ON THE UMICH NETWORK AND LINUX / UNIX ENVIRONMENT
 #### Step 1: Download the tar file
 This can be done using any method of your choice.
-#### Step 2: Unzip the downloaded tar file
+#### Step 2: Extract the downloaded tar file
 ```bash
-$tar -xvf das_t_p1
+$ tar -xvf das_t_p1.tar
 ```
 #### Step 3: Confirm the contents
 01. Server.java
