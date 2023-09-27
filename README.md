@@ -20,9 +20,9 @@ UMich CIS 527 Group: 30
 - Researched for standardized format and developed the README document.
 
 ### FUNCTIONS USED
-- writeToClient; used to invoke the BufferedWriter function to write to the buffer, create a new line and then flush out the buffer.
-- writeToFile; used to write the word of the day string to the word.txt file without overwriting the original content.
-- readFromFile; used to read data from the word.txt file and store them in an array list.
+- writeToClient: used to invoke the BufferedWriter function to write to the buffer, create a new line and then flush out the buffer.
+- writeToFile: used to write the word of the day string to the word.txt file without overwriting the original content.
+- readFromFile: used to read data from the word.txt file and store them in an array list.
 - writeToServer: used to send messages from the client to the server.
 
 ### PROJECT DESCRIPTION
