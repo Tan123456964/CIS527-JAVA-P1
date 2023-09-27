@@ -1,5 +1,4 @@
 # YAMOTD PROJECT
-Yet another "message of the day" - yamotd is a java program for returning messages of the day already stored within the program.
 ### AUTHORS
 - Tapon Das
 - Patrick Imoh
@@ -22,9 +21,9 @@ UMich CIS 527 Group: 30
 
 ### FUNCTIONS USED
 - writeToClient; used to invoke the BufferedWriter function to write to the buffer, create a new line and then flush out the buffer.
-- writeToFile; used to write the word of the day string to the word.txt file.
-- HashMap; used to store the key-value pairs for the usernames and passwords.
-- ArrayList; used to read data from file and store them in a dynamic array.
+- writeToFile; used to write the word of the day string to the word.txt file without overwriting the original content.
+- readFromFile; used to read data from the word.txt file and store them in an array list.
+- writeToServer: used to send messages from the client to the server.
 
 ### PROJECT DESCRIPTION
 The programs are written in java programming language and can be run on either a linux or unix environment. There is a client "Client.java" as well as server "Server.java" program. The communication between the server and client happens through TCP using the port number 6333. The server receives requests through this socket, acts on those requests, and returns the results to the requester. The client also creates a socket in the internet domain, send requests to the server IP of a computer specified on the command-line, and receive responses through this socket from the server. Only one connection between a client and the server is possible at this time.
@@ -59,7 +58,7 @@ To use the UMich VPN option, use the PaloAlto GlobalProtect VPN application and 
 #### Step 5: Connect to UMich Server
 Only for users connecting to the UMich Server. Linux / Unix users ignore this step.
 ```bash
-$ssh username@login.umd.umich.edu -p 22
+$ ssh username@login.umd.umich.edu -p 22
 # Username is UMich ID; e.g., username = 'john' where email is john@umich.edu
 # Use your UMich password
 # Authenticate with Duo application
@@ -67,26 +66,26 @@ $ssh username@login.umd.umich.edu -p 22
 #### Step 6: Copy files to server
 Only for users connecting to the UMich Server. Linux / Unix users ignore this step.
 ```bash
-$scp -rv source -P 22 username@login.umd.umich.edu: destination-path
+$ scp -rv source -P 22 username@login.umd.umich.edu: destination-path
 # Username is UMich ID; e.g., username = 'john' where email is john@umich.edu
 # Use your UMich password
 # Authenticate with Duo application
 ```
 #### Step 7: Run code with makefile
 ```bash
-$make all               # Creates the Server and Client class files
-$make Server.class      # Creates only the Server class file
-$make Client.class      # Creates only client class file 
+$ make all               # Creates the Server and Client class files
+$ make Server.class      # Creates only the Server class file
+$ make Client.class      # Creates only the client class file 
 ```
 #### Step 8: Run the java code
 ```bash
-$java Server
-$java Client IP         # e.g., java Client 127.0.0.1 
+$ java Server
+$ java Client IP         # e.g., java Client 127.0.0.1 
 ```
 #### Step 9: To rebuild the files
 ```bash
-$make clean             # removes the Server and Client class files
-$make clean all         # removes the Server and Client class files and then rebuilds a new Server and Client class files
+$ make clean             # removes the Server and Client class files
+$ make clean all         # removes the Server and Client class files and then rebuilds a new Server and Client class files
 ```
 ### HOW TO USE THE YAMOTD PROGRAM
 The server begins execution by reading the "word.txt" file, which initially has five (5) messages of the day stored in it. Once executed, the server would wait for connection requests from the client.
@@ -105,7 +104,7 @@ The MSGSTORE command is used to send one message of the day by a logged in user 
 Enter command: MSGSTORE
 401 You are not currently logged in, login first.
 
-Enter command:LOGIN 'username' 'password'
+Enter command:LOGIN username password
 200 OK
 
 Enter command: MSGSTORE
@@ -123,7 +122,7 @@ Enter command: SHUTDOWN # when logged in user is not "root"
 Enter command: LOGOUT
 200 OK
 
-Enter command: LOGIN root 'password'
+Enter command: LOGIN root password
 200 OK
 
 Enter command: SHUTDOWN1
@@ -131,7 +130,7 @@ Enter command: SHUTDOWN1
 
 Enter command: SHUTDOWN
 200 OK
-***End of client program.***
+***Client Terminated Successfully***
 ```
 #### LOGIN
 The LOGIN command is used to authenticate a user with the server. The server checks and only authenticates users whose username and password match its records. A "200 OK" messages signifies a successful login whereas "410 Wrong UserID or Password" means that either a wrong username or password has been sent. The usage of this command is demonstrated below.
@@ -139,10 +138,10 @@ The LOGIN command is used to authenticate a user with the server. The server che
 Enter command: LOGIN wrong_username wrong_password
 410 Wrong UserID or Password.
 
-Enter command: LOGIN mike 'password'
+Enter command: LOGIN mike password
 200 OK
 
-Enter command: LOGIN smith 'password'
+Enter command: LOGIN smith password
 409 user mike is already logged in.
 ```
 #### LOGOUT
@@ -162,14 +161,5 @@ The QUIT command is used to terminate the session between the client and the ser
 ```bash
 Enter command: QUIT
 200 OK
-***End of client program.***
+***Client Terminated Successfully***
 ```
-#### SUMMARY OF SAMPLE OUTPUTS
-- MSGGET      [Usage: MSGGET]
-- MSGSTORE    [Usage: MSGSTORE '\n' <message>]
-- SHUTDOWN    [Usage: SHUTDOWN]
-- LOGIN       [Usage: LOGIN <username> <password>]
-- LOGOUT      [Usage: LOGOUT]
-- QUIT        [Usage: QUIT]
-### LICENSE
-GNU General Public License
